@@ -22,8 +22,8 @@ preprocess_worldbank_data <- function(unemp_file, gdp_file, infl_file, start_yea
   }
 
   unemp_data <- clean_wb_data(unemp_file, "Unemployment")
-  gdp_data   <- clean_wb_data(gdp_file, "GDP_Growth")
-  infl_data  <- clean_wb_data(infl_file, "Inflation")
+  gdp_data <- clean_wb_data(gdp_file, "GDP_Growth")
+  infl_data <- clean_wb_data(infl_file, "Inflation")
 
   merged_data <- dplyr::inner_join(
     unemp_data,
@@ -40,6 +40,21 @@ preprocess_worldbank_data <- function(unemp_file, gdp_file, infl_file, start_yea
     merged_data,
     Year >= start_year & Year <= end_year
   )
+
+  remove_outliers <- function(data, col_name) {
+    q1 <- stats::quantile(data[[col_name]], 0.25, na.rm = TRUE)
+    q3 <- stats::quantile(data[[col_name]], 0.75, na.rm = TRUE)
+    iqr <- q3 - q1
+    lower_bound <- q1 - 1.5 * iqr
+    upper_bound <- q3 + 1.5 * iqr
+
+    data <- data[base::is.na(data[[col_name]]) | (data[[col_name]] >= lower_bound & data[[col_name]] <= upper_bound), ]
+    base::return(data)
+  }
+
+  merged_data <- remove_outliers(merged_data, "Unemployment")
+  merged_data <- remove_outliers(merged_data, "GDP_Growth")
+  merged_data <- remove_outliers(merged_data, "Inflation")
 
   base::return(merged_data)
 }

@@ -1,3 +1,23 @@
 {
-    "cSpell.words": ["ggarrange", "ggpubr", "ggsave", "ggscatter", "tidyverse"]
+    "cSpell.words": [
+        "bptest",
+        "Breusch",
+        "COEF",
+        "coefs",
+        "dplyr",
+        "ggarrange",
+        "ggplot",
+        "ggpubr",
+        "ggsave",
+        "ggscatter",
+        "INFL",
+        "lmtest",
+        "mfrow",
+        "readr",
+        "tidyr",
+        "tidyselect",
+        "tidyverse",
+        "Wilk",
+        "worldbank"
+    ]
 }
